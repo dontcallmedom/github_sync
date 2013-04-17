@@ -186,11 +186,12 @@ def main(config):
 
         if "commits" in data:
             process_push(config)
-        else:
-            user_is_authorised = data["user"]["login"] in authorised_users
+        else:            
             if "pull_request" in data:
+                user_is_authorised = data["pull_request"]["user"]["login"] in authorised_users
                 process_pull_request(config, data, user_is_authorised)
             elif "comment" in data:
+                user_is_authorised = data["comment"]["user"]["login"] in authorised_users
                 process_issue_comment(config, data, user_is_authorised)
             else:
                 print >> sys.stderr, "Unrecognised event type with keys %r" % (data.keys(),)
